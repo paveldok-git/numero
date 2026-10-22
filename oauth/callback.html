@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>NUMERO · Pinterest authorization</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+  .box{border:1px solid var(--line);border-radius:14px;padding:22px;background:rgba(255,255,255,.4);margin:24px 0}
+  code{display:block;word-break:break-all;font-size:15px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px;margin:12px 0}
+  button{font:inherit;font-weight:700;background:var(--ink);color:var(--paper);border:0;border-radius:999px;padding:12px 22px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><a class="brand" href="../">NUMERO</a></header>
+  <article class="doc">
+    <h1>Pinterest authorization</h1>
+    <div class="box" id="ok" hidden>
+      <p>Authorization code (valid for a few minutes). Copy it into the NUMERO publishing tool:</p>
+      <code id="code"></code>
+      <button id="copy" type="button">Copy code</button>
+    </div>
+    <div class="box" id="err" hidden><p id="errtext"></p></div>
+    <p class="meta">This page only displays the code from the address bar. It stores and sends nothing.</p>
+  </article>
+</div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const code = q.get('code'), error = q.get('error');
+  if (code) {
+    document.getElementById('ok').hidden = false;
+    document.getElementById('code').textContent = code;
+    document.getElementById('copy').onclick = () => navigator.clipboard.writeText(code)
+      .then(() => { document.getElementById('copy').textContent = 'Copied'; });
+  } else {
+    document.getElementById('err').hidden = false;
+    document.getElementById('errtext').textContent = error ? ('Pinterest returned: ' + error) : 'No authorization code in this address.';
+  }
+</script>
+</body>
+</html>
